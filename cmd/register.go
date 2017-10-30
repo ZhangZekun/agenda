@@ -37,7 +37,7 @@ to quickly create a Cobra application.`,
 		password, _ := cmd.Flags().GetString("password")
 		email, _ := cmd.Flags().GetString("email")
 		//	fmt.Println("register called by " + username + password + email)
-		userInfo := &User.User{username, password, email, nil, nil}
+		userInfo := &User.User{username, password, email, make([]string, 0, 5), make([]string, 0, 5)}
 		User.RegisterAnUser(userInfo)
 	},
 }
