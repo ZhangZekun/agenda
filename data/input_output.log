@@ -1,0 +1,52 @@
+2017/10/29 03:35:53 agenda register -u ddd -p bbb -e ccc@qq.com
+2017/10/29 03:40:06 agenda register -u eeeee -p bbb -e ccc@qq.com
+2017/10/29 04:06:32 agenda logout
+2017/10/29 04:06:32 you have logged out!
+2017/10/29 04:07:10 agenda register -u zhangzekun -p 123456 -e 13829062426@163.com
+2017/10/29 04:07:10 register succeed!
+2017/10/29 04:07:32 agenda login -u zhangzekun -p 123456
+2017/10/29 04:07:32 you haved logged in
+2017/10/29 04:07:37 agenda login -u zhangzekun -p 123456
+2017/10/29 04:07:37 You have log in already!
+2017/10/29 04:07:55 agenda logout
+2017/10/29 04:07:55 you have logged out!
+2017/10/29 04:08:04 agenda login -u zhangzeku -p 123456
+2017/10/29 04:08:04 Username or password is incorrect!
+2017/10/29 04:08:24 agenda login -u zhangzekun -p 123456
+2017/10/29 04:08:24 you haved logged in
+2017/10/29 04:08:40 agenda logout
+2017/10/29 04:08:40 you have logged out!
+2017/10/29 05:09:26 agenda register -u zhangzemian -p 123456 -e 13829062426@163.com
+2017/10/29 05:09:26 register succeed!
+2017/10/29 19:57:20 agenda register -u zhangzekun -p 123456 -e 138290
+2017/10/29 19:57:20 The userName have been registered
+2017/10/29 19:57:57 agenda register -u zhangzekun -p 123456 -e 138290
+2017/10/29 19:57:57 register succeed!
+2017/10/29 19:58:07 agenda register -u zhangzekun -p 123456 -e 138290
+2017/10/29 19:58:07 The userName have been registered
+2017/10/29 19:58:27 agenda login -u zhangzekun -p 123456
+2017/10/29 19:58:27 you haved logged in
+2017/10/29 19:58:36 agenda logout
+2017/10/29 19:58:36 you have logged out!
+2017/10/29 19:58:40 agenda login -u zhangzekun -p 12345
+2017/10/29 19:58:40 Username or password is incorrect!
+2017/10/29 19:58:47 agenda login -u zhangzekun -p 123456
+2017/10/29 19:58:47 you haved logged in
+2017/10/29 19:58:54 agenda logout
+2017/10/29 19:58:54 you have logged out!
+2017/10/29 20:05:13 agenda searchUser
+2017/10/29 20:05:24 agenda login -u zhangzekun -p 123456
+2017/10/29 20:05:24 you haved logged in
+2017/10/29 20:05:28 agenda searchUser
+2017/10/29 22:57:16 agenda logout
+2017/10/29 22:57:16 you have logged out!
+2017/10/29 22:57:27 agenda login -u zhangzekun -p 123456
+2017/10/29 22:57:27 you haved logged in
+2017/10/29 22:57:53 agenda logout
+2017/10/29 22:57:53 you have logged out!
+2017/10/29 22:57:58 agenda login -u zhangzekun -p 123456
+2017/10/29 22:57:58 you haved logged in
+2017/10/29 23:13:30 agenda register -u zhangzekun -p 123456 -e 13829
+2017/10/29 23:13:30 register succeed!
+2017/10/29 23:13:54 agenda login -u zhangzekun -p 123456
+2017/10/29 23:13:54 you haved logged in

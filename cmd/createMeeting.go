@@ -15,15 +15,15 @@
 package cmd
 
 import (
+	"agenda/entity/Meeting"
 	"fmt"
-
-	"agenda/entity/User"
 	"github.com/spf13/cobra"
+	//"time"
 )
 
-// registerCmd represents the register command
-var registerCmd = &cobra.Command{
-	Use:   "register",
+// createMeetingCmd represents the createMeeting command
+var createMeetingCmd = &cobra.Command{
+	Use:   "createMeeting",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -32,29 +32,31 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("register called")
-		username, _ := cmd.Flags().GetString("username")
-		password, _ := cmd.Flags().GetString("password")
-		email, _ := cmd.Flags().GetString("email")
-		//	fmt.Println("register called by " + username + password + email)
-		userInfo := &User.User{username, password, email, nil, nil}
-		User.RegisterAnUser(userInfo)
+		fmt.Println("createMeeting called")
+		title, _ := cmd.Flags().GetString("title")
+		startTime, _ := cmd.Flags().GetString("startTime")
+		endTime, _ := cmd.Flags().GetString("endTime")
+		fmt.Println(startTime)
+		fmt.Println(endTime)
+		timeS, _ := Meeting.StringToDate(startTime)
+		timeE, _ := Meeting.StringToDate(endTime)
+		Meeting.CreateAMeeting(&Meeting.Meeting{title, "", nil, timeS, timeE, ""})
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(registerCmd)
-	registerCmd.Flags().StringP("username", "u", "", "Username")
-	registerCmd.Flags().StringP("password", "p", "", "User password")
-	registerCmd.Flags().StringP("email", "e", "", "User email")
+	RootCmd.AddCommand(createMeetingCmd)
+	createMeetingCmd.Flags().StringP("title", "t", "", "title")
+	createMeetingCmd.Flags().StringP("startTime", "s", "", "startTime")
+	createMeetingCmd.Flags().StringP("endTime", "e", "", "User endTime")
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// registerCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// createMeetingCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// registerCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// createMeetingCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
