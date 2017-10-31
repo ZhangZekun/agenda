@@ -24,13 +24,9 @@ import (
 // createMeetingCmd represents the createMeeting command
 var createMeetingCmd“” = &cobra.Command{
 	Use:   "createMeeting",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "to create a meeting for user",
+	Long: `the user need to input the title, participants, startTime, endTime of the meeting.For example:
+	./agenda createMeeting -t=Work -p=zhangzekun -s=2016-10-10/10:00 -e=2017-10-10/10:00`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("createMeeting called")
 		title, _ := cmd.Flags().GetString("title")
@@ -39,7 +35,7 @@ to quickly create a Cobra application.`,
 		endTime, _ := cmd.Flags().GetString("endTime")
 		timeS, _ := Meeting.StringToDate(startTime)
 		timeE, _ := Meeting.StringToDate(endTime)
-		Meeting.CreateAMeeting(&Meeting.Meeting{title, "", participants, timeS, timeE, ""})
+		Meeting.create_meeting(&Meeting.Meeting{title, "", participants, timeS, timeE, ""})
 	},
 }
 

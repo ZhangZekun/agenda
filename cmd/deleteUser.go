@@ -24,16 +24,12 @@ import (
 // deleteUserCmd represents the deleteUser command
 var deleteUserCmd = &cobra.Command{
 	Use:   "deleteUser",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "to delete the user own account",
+	Long: `you don't need to input anything.For example:
+	./agenda deleteUser`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("deleteUser called")
-		Meeting.DeleteUser()
+		Meeting.delete_user()
 	},
 }
 

@@ -20,21 +20,19 @@ type User struct {
 }
 
 //register the user with name, password, email
-func RegisterAnUser(user *User) {
-	AllUserInfo := GetAllUserInfo()
+func register_user(user *User) {
+	AllUserInfo := get_all_user_Info()
 	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
 	defer flog.Close()
-	check(err)
+	check_err(err)
 	logger := log.New(flog, "", log.LstdFlags)
-	logger.Printf("agenda register -u %s -p %s -e %s", user.Username, user.Password, user.Email)
 
 	if _, ok := AllUserInfo[user.Username]; !ok {
 		AllUserInfo[user.Username] = *user
-		os.Stdout.WriteString("register succeed!\n")
-		logger.Print("register succeed!\n")
+		os.Stdout.WriteString("[agenda][info]"+ user.Username + "registed succeed!\n")
+		logger.Printf("[agenda][info] %s registed succeed\n", user.Username)
 	} else {
-		os.Stdout.WriteString("The userName have been registered\n")
-		logger.Print("The userName have been registered\n")
+		os.Stdout.WriteString("[agenda][warning]The userName " + user.Username + "have been registered\n")
 	}
 
 	fout, _ := os.Create("data/User.json")
@@ -44,98 +42,93 @@ func RegisterAnUser(user *User) {
 }
 
 //search all user
-func SearchAllUser() {
-	AllUserInfo := GetAllUserInfo()
+func search_all_user() {
+	AllUserInfo := get_all_user_info()
 	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
 	defer flog.Close()
-	check(err)
+	check_err(err)
 	logger := log.New(flog, "", log.LstdFlags)
-	logger.Printf("agenda searchUser")
+	logger.Printf("[agenda][info]" + get_cur_user_name() + " search all users")
 
-	if GetCurUserName() == "" {
+	if get_cur_user_name() == "" {
 		os.Stdout.WriteString("You haven't logged in, can't search for all users!\n")
 		return
 	} else {
 		for _, val := range AllUserInfo {
-			fmt.Println(val.Username, val.Password, val.Email)
+			fmt.Println("[agenda][info]name: %s, email: %s", val.Username, val.Email)
 		}
 	}
 }
 
 //log in with name, password
-func LogIn(user *User) {
-	AllUserInfo := GetAllUserInfo()
+func logIn(user *User) {
+	AllUserInfo := get_all_user_info()
 
 	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
 	defer flog.Close()
-	check(err)
+	check_err(err)
 	logger := log.New(flog, "", log.LstdFlags)
-	logger.Printf("agenda login -u %s -p %s", user.Username, user.Password)
 
-	if GetCurUserName() != "" {
-		os.Stdout.WriteString("You have log in already!\n")
-		logger.Print("You have log in already!\n")
+	if get_cur_user_name() != "" {
+		os.Stdout.WriteString("[agenda][warning]You have log in already\n")
 		return
 	}
 	if _, ok := AllUserInfo[user.Username]; !ok {
-		os.Stdout.WriteString("Username or password is incorrect!\n")
-		logger.Print("Username or password is incorrect!\n")
+		os.Stdout.WriteString("[agenda][error]Username or password is incorrect!\n")
 	} else {
 		correctPass := AllUserInfo[user.Username].Password
 		if correctPass == user.Password {
 			fout, _ := os.Create("data/current.txt")
 			defer fout.Close()
 			fout.WriteString(user.Username)
-			os.Stdout.WriteString("you haved logged in\n")
-			logger.Print("you haved logged in\n")
+			os.Stdout.WriteString("[agenda][info]"+user.Username+" haved logged in\n")
+			logger.Print("[agenda][info]"+user.Username+" haved logged in\n")
 		} else {
-			os.Stdout.WriteString("Username or password is incorrect!\n")
-			logger.Print("Username or password is incorrect!\n")
+			os.Stdout.WriteString("[agenda][error]Username or password is incorrect!\n")
 		}
 	}
 }
 
 //log out with name, password
-func LogOut() {
+func logout() {
 	//	AllUserInfo := GetAllUserInfo()
+	curuser = get_cur_user_name()
 	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
 	defer flog.Close()
-	check(err)
+	check_err(err)
 	logger := log.New(flog, "", log.LstdFlags)
-	logger.Printf("agenda logout")
 
-	if GetCurUserName() == "" {
-		os.Stdout.WriteString("You haven't logged in!\n")
-		logger.Print("You haven't logged in!\n")
+	if get_cur_user_name() == "" {
+		os.Stdout.WriteString("[agenda][error]You haven't logged in!\n")
 	} else {
 		fout, _ := os.Create("data/current.txt")
 		defer fout.Close()
 		fout.WriteString("")
-		os.Stdout.WriteString("you have logged out!\n")
-		logger.Print("you have logged out!\n")
+		os.Stdout.WriteString("[agenda][info]" + curuser +" logged out!\n")
+		logger.Print("[agenda][info]" + curuser +" logged out!\n")
 	}
 }
 
 //load all user infomation to User.AllUserInfo
-func GetAllUserInfo() map[string]User {
+func get_all_user_info() map[string]User {
 
 	byteIn, err := ioutil.ReadFile("data/User.json")
-	check(err)
+	check_err(err)
 	var allUserInfo map[string]User
 	json.Unmarshal(byteIn, &allUserInfo)
 	return allUserInfo
 }
 
-func GetCurUserName() string {
+func get_cur_user_name() string {
 	fin, err0 := os.Open("data/current.txt")
-	check(err0)
+	check_err(err0)
 	defer fin.Close()
 	reader := bufio.NewReader(fin)
 	str, _ := reader.ReadString('\n')
 	return str
 }
 
-func check(r error) {
+func check_err(r error) {
 	if r != nil {
 		log.Fatal(r)
 	}
