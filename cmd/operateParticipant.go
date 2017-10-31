@@ -33,7 +33,7 @@ var operateParticipantCmd = &cobra.Command{
 		title, _ := cmd.Flags().GetString("title")
 		operation, _ := cmd.Flags().GetString("op")
 		participants, _ := cmd.Flags().GetStringSlice("participants")
-		Meeting.operate_participants(title,operation, participants)
+		Meeting.Operate_participants(title,operation, participants)
 	},
 }
 

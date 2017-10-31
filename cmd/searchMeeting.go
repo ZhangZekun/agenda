@@ -31,7 +31,7 @@ var searchMeetingCmd = &cobra.Command{
 		fmt.Println("searchMeeting called")
 		startTime,_ := cmd.Flags().GetString("startTime")
 		endTime,_ := cmd.Flags().GetString("endTime")
-		Meeting.search_meeting(startTime, endTime)
+		Meeting.Search_meeting(startTime, endTime)
 	},
 }
 

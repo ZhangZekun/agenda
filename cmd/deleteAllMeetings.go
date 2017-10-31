@@ -29,7 +29,7 @@ var deleteAllMeetingsCmd = &cobra.Command{
 	./agenda deleteAllMeetings`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("deleteAllMeetings called")
-		Meeting.delete_all_meetings()
+		Meeting.Delete_all_meetings()
 	},
 }
 

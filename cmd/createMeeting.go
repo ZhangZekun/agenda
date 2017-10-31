@@ -22,7 +22,7 @@ import (
 )
 
 // createMeetingCmd represents the createMeeting command
-var createMeetingCmd“” = &cobra.Command{
+var createMeetingCmd = &cobra.Command{
 	Use:   "createMeeting",
 	Short: "to create a meeting for user",
 	Long: `the user need to input the title, participants, startTime, endTime of the meeting.For example:
@@ -33,9 +33,9 @@ var createMeetingCmd“” = &cobra.Command{
 		participants, _ := cmd.Flags().GetStringSlice("participants")
 		startTime, _ := cmd.Flags().GetString("startTime")
 		endTime, _ := cmd.Flags().GetString("endTime")
-		timeS, _ := Meeting.StringToDate(startTime)
-		timeE, _ := Meeting.StringToDate(endTime)
-		Meeting.create_meeting(&Meeting.Meeting{title, "", participants, timeS, timeE, ""})
+		timeS, _ := Meeting.String_to_date(startTime)
+		timeE, _ := Meeting.String_to_date(endTime)
+		Meeting.Create_meeting(&Meeting.Meeting{title, "", participants, timeS, timeE, ""})
 	},
 }
 

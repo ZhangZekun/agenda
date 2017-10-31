@@ -28,7 +28,7 @@ var logoutCmd = &cobra.Command{
 	./agenda logout`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("logout called")
-		User.logout()
+		User.Logout()
 	},
 }
 

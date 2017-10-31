@@ -29,7 +29,7 @@ var cancelMeetingCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("cancelMeeting called")
 		title, _ := cmd.Flags().GetString("title")
-		Meeting.cancel_meeting(title)
+		Meeting.Cancel_meeting(title)
 	},
 }
 
