@@ -68,3 +68,97 @@
 2017/10/30 04:08:15 register succeed!
 2017/10/30 04:08:34 agenda login -u zhangzekun -p 123456
 2017/10/30 04:08:34 you haved logged in
+2017/10/30 17:29:50 agenda register -u  -p  -e 
+2017/10/30 17:29:50 register succeed!
+2017/10/30 17:32:29 agenda register -u ZhangZemian -p 15331411 -e 1106066690@qq.com
+2017/10/30 17:32:29 register succeed!
+2017/10/30 17:45:26 agenda register -u  -p  -e 
+2017/10/30 17:45:26 The userName have been registered
+2017/10/30 17:46:03 agenda register -u zhangzemian -p 15331411 -e 1106066690@qq.com
+2017/10/30 17:46:03 register succeed!
+2017/10/30 17:56:11 agenda register -u  -p  -e 
+2017/10/30 17:56:11 The userName have been registered
+2017/10/30 22:38:03 agenda login -u zhanzemian -p 15331411
+2017/10/30 22:38:03 You have log in already!
+2017/10/30 22:44:40 agenda logout
+2017/10/30 22:44:40 you have logged out!
+2017/10/30 22:44:49 agenda login -u zhanzemian -p 15331411
+2017/10/30 22:44:49 Username or password is incorrect!
+2017/10/30 22:46:02 agenda login -u zhangzemian -p 15331411
+2017/10/30 22:46:02 you haved logged in
+2017/10/31 00:02:14 agenda logout
+2017/10/31 00:02:14 you have logged out!
+2017/10/31 00:02:19 agenda login -u  -p 
+2017/10/31 00:02:19 you haved logged in
+2017/10/31 00:02:28 agenda logout
+2017/10/31 00:02:28 You haven't logged in!
+2017/10/31 00:02:38 agenda login -u zhangzemian -p 15331411
+2017/10/31 00:02:38 you haved logged in
+2017/10/31 06:12:18 agenda logout
+2017/10/31 06:12:18 you have logged out!
+2017/10/31 06:12:21 agenda logout
+2017/10/31 06:12:21 You haven't logged in!
+2017/10/31 06:12:27 agenda login -u  -p 
+2017/10/31 06:12:27 you haved logged in
+2017/10/31 06:12:32 agenda logout
+2017/10/31 06:12:32 You haven't logged in!
+2017/10/31 06:12:47 agenda login -u zhangzemian -p 15331411
+2017/10/31 06:12:47 you haved logged in
+2017/10/31 07:16:32 agenda logout
+2017/10/31 07:16:32 you have logged out!
+2017/10/31 07:16:38 agenda login -u  -p 
+2017/10/31 07:16:38 you haved logged in
+2017/10/31 07:16:43 agenda logout
+2017/10/31 07:16:43 You haven't logged in!
+2017/10/31 07:16:54 agenda login -u zhangzekun -p 12345
+2017/10/31 07:16:54 Username or password is incorrect!
+2017/10/31 07:16:58 agenda login -u zhangzekun -p 1234
+2017/10/31 07:16:58 Username or password is incorrect!
+2017/10/31 07:17:28 agenda login -u zhangzekun -p 123456
+2017/10/31 07:17:28 you haved logged in
+2017/10/31 08:08:23 agenda logout
+2017/10/31 08:08:23 you have logged out!
+2017/10/31 08:08:33 agenda login -u  -p 
+2017/10/31 08:08:33 you haved logged in
+2017/10/31 08:08:36 agenda logout
+2017/10/31 08:08:36 You haven't logged in!
+2017/10/31 08:08:52 agenda login -u ZhangZeMian -p 15331411
+2017/10/31 08:08:52 Username or password is incorrect!
+2017/10/31 08:09:15 agenda login -u ZhangZemian -p 15331411
+2017/10/31 08:09:15 you haved logged in
+2017/10/31 08:34:17 agenda logout
+2017/10/31 08:34:17 you have logged out!
+2017/10/31 08:34:45 agenda login -u zhangzekun -p 123456
+2017/10/31 08:34:45 you haved logged in
+2017/10/31 09:23:06 agenda logout
+2017/10/31 09:23:06 you have logged out!
+2017/10/31 09:23:10 agenda login -u  -p 
+2017/10/31 09:23:10 you haved logged in
+2017/10/31 09:23:18 agenda logout
+2017/10/31 09:23:18 You haven't logged in!
+2017/10/31 09:23:39 agenda login -u zhangzemian -p 15331411
+2017/10/31 09:23:39 you haved logged in
+2017/10/31 09:27:25 agenda logout
+2017/10/31 09:27:25 you have logged out!
+2017/10/31 09:27:46 agenda login -u ZhangZemian -p 15331411
+2017/10/31 09:27:46 you haved logged in
+2017/10/31 09:28:01 agenda logout
+2017/10/31 09:28:01 you have logged out!
+2017/10/31 09:30:56 agenda login -u zhangzemian -p 15331411
+2017/10/31 09:30:56 you haved logged in
+2017/10/31 09:31:27 agenda logout
+2017/10/31 09:31:27 you have logged out!
+2017/10/31 09:31:47 agenda login -u ZhangZemian -p 15331411
+2017/10/31 09:31:47 you haved logged in
+2017/10/31 09:31:53 agenda logout
+2017/10/31 09:31:53 you have logged out!
+2017/10/31 09:32:29 agenda login -u zhangzemian -p 15331411
+2017/10/31 09:32:29 you haved logged in
+2017/10/31 09:32:32 agenda logout
+2017/10/31 09:32:32 you have logged out!
+2017/10/31 09:32:35 agenda login -u ZhangZemian -p 15331411
+2017/10/31 09:32:35 Username or password is incorrect!
+2017/10/31 09:32:38 agenda login -u zhangzemian -p 15331411
+2017/10/31 09:32:38 you haved logged in
+2017/10/31 09:32:42 agenda logout
+2017/10/31 09:32:42 you have logged out!
