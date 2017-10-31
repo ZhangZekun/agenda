@@ -30,8 +30,8 @@ var loginCmd = &cobra.Command{
 		fmt.Println("login called")
 		username, _ := cmd.Flags().GetString("username")
 		password, _ := cmd.Flags().GetString("password")
-		userInfo := &User.User{username, password, "", nil, nil}
-		User.login(userInfo)
+		userInfo := &User.User{username, password, "", "", nil, nil}
+		User.Login(userInfo)
 	},
 }
 

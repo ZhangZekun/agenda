@@ -34,8 +34,8 @@ var registerCmd = &cobra.Command{
 		email, _ := cmd.Flags().GetString("email")
 		phone, _ := cmd.Flags().GetString("telephone")
 		//	fmt.Println("register called by " + username + password + email)
-		userInfo := &User.User{username, password, email, make([]string, 0, 5), make([]string, 0, 5)}
-		User.register_user(userInfo)
+		userInfo := &User.User{username, password, email, phone, make([]string, 0, 5), make([]string, 0, 5)}
+		User.Register_user(userInfo)
 	},
 }
 

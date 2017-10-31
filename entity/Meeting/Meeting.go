@@ -20,13 +20,18 @@ type Meeting struct {
 	Id           string
 }
 
-func create_meeting(meeting *Meeting) {
-	currentName := User.get_cur_user_name()
+func Create_meeting(meeting *Meeting) {
+	currentName := User.Get_cur_user_name()
 	if currentName == "" {
 		fmt.Println("[agenda][error]you haven't logged in\n")
 		return
 	}
 
+
+	if(meeting.Title == "" ||len(meeting.Participants) == 0){
+		fmt.Println("[agenda][error]the cmd is wrong.you need to input the title, participants, startTime, endTime of the meeting.For example:\n./agenda createMeeting -t=Work -p=zhangzekun -s=2016-10-10/10:00 -e=2017-10-10/10:00 ")
+		return
+	}
 	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
 	defer flog.Close()
 	check_err(err)
@@ -42,7 +47,7 @@ func create_meeting(meeting *Meeting) {
 	meeting.Participants = append(meeting.Participants)
 	allMeetings[meeting.Id] = *meeting
 
-	var map[string]*User.User = GetAllUserInfo()
+	var allUser map[string]*User.User = Get_All_User_Info()
 	//check all participanter exist, and time contract
 	for _, pName := range meeting.Participants {
 		//check if the user exist
@@ -52,7 +57,7 @@ func create_meeting(meeting *Meeting) {
 		}
 		//check if the user's old meeting is contract with the new one
 		for _, meetingId := range allUser[pName].ParticipantMeeting {
-			if TimeContact(meeting.StartTime, meeting.EndTime, allMeetings[meetingId].StartTime, allMeetings[meetingId].EndTime, pName, title) {
+			if time_contact(meeting.StartTime, meeting.EndTime, allMeetings[meetingId].StartTime, allMeetings[meetingId].EndTime, pName, meeting.Title) {
 				return
 			}
 		}
@@ -60,49 +65,55 @@ func create_meeting(meeting *Meeting) {
 	}
 	allUser[currentName].SponsorMeeting = append(allUser[currentName].SponsorMeeting, meeting.Id)
 
+	fmt.Printf("[agenda][info]%s create a meeting %+v\n", currentName, *meeting)
 	logger.Printf("[agenda][info]%s create a meeting %+v\n", currentName, *meeting)
 	
 	write_meeting_json(allMeetings)
 	write_user_json(allUser)	
 }
 
-func operate_participants(title, operation string, participants []string){
-	current_user := User.GetCurUserName()
+func Operate_participants(title, operation string, participants []string){
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("[agenda][error]you haven't logged in\n")
 		return 
 	}
+
+	if(title == "" || (operation != "add" && operation != "del") || len(participants) == 0){
+		fmt.Println("[agenda][error]you need to input three arguments(title(t), operation(o), participants(p)).For example:\naddCMD:./agenda operateParticipant -t=Work -o=add -p=zhangzekun, zhangzhijian;\ndeleteCMD:./agenda operateParticipant -t=Work -o=del -p=zhangzekun,zhangzhijian\n")
+		return
+	}
 	check_participants_exist(participants)
-	var allUser map[string]*User.User = get_all_user_info()
+	var allUser map[string]*User.User = Get_all_user_info()
 	var all_meetings map[string]Meeting = get_all_meeting_info()
-	count := 0
+	var count int = 0
 	for i := range all_meetings{
 		if all_meetings[i].Title == title && all_meetings[i].Sponsor == current_user {
+			count++
 			if operation == "del" {
-				allUser, all_meetings = del_participants(allUser, all_meetings, participants)
+				allUser, all_meetings = del_participants(allUser, all_meetings, participants, i)
 				break
 			}
 			if operation == "add" {
-				allUser, all_meetings = add_participants_main(allUser, all_meetings, participants)
+				allUser, all_meetings = add_participants_main(allUser, all_meetings, participants, i)
 				break
 			}
-			count++
 		}
 	}
 	if count == 0{
 		fmt.Println("The meeting isn't exited\n")
 		return 
 	}
-	write_meeting_json(allMeetings)
+	write_meeting_json(all_meetings)
 	write_user_json(allUser)
 }
 
 //时间处理函数
-func date_to_string(date time.Time) string {
+func Date_to_string(date time.Time) string {
 	return date.Format("2006-01-02/15:04")
 }
 
-func string_to_date(date string) (time.Time, error) {
+func String_to_date(date string) (time.Time, error) {
 	the_time, err := time.Parse("2006-01-02/15:04", date)
 	return the_time, err
 }
@@ -121,7 +132,7 @@ func time_contact(newDateS, newDateE, oriDateS, oriDateE time.Time, userName str
 		fmt.Println("[agenda][error]start time can't be greater than end time")
 		return true
 	}
-	if small_date(newDateE, oriDateS) || LargeDate(newDateS, oriDateE) {
+	if small_date(newDateE, oriDateS) || large_date(newDateS, oriDateE) {
 		return false
 	}
 	fmt.Println("[agenda][error]time contract with " + userName + "'s meeting with title:" + title)
@@ -180,7 +191,12 @@ func slice_to_string(slice []string)string {
 	return slice_str
 }
 
-func del_participants(allUser map[string]*User.User, all_meetings map[string]Meeting, participants []string)(map[string]*User.User, map[string]Meeting) {
+func del_participants(allUser map[string]*User.User, all_meetings map[string]Meeting, participants []string, i string)(map[string]*User.User, map[string]Meeting) {
+	title := all_meetings[i].Title
+	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+	defer flog.Close()
+	check_err(err)
+	logger := log.New(flog, "", log.LstdFlags)
 	all_meetings[i] = remove_participant(all_meetings[i], participants)
 	allUser = remove_participantmeeting(allUser, participants, all_meetings[i].Id)
 	if(len(all_meetings[i].Participants) == 0){
@@ -196,7 +212,7 @@ func del_participants(allUser map[string]*User.User, all_meetings map[string]Mee
 func check_participants_repeat(participants []string, m_participants []string) bool{
 	for j := range m_participants{
 		for k := range participants{
-			if m_participants == participants[k]{
+			if m_participants[j] == participants[k]{
 				fmt.Println("[agenda][error]The user " + participants[k]+"is already in the meeting\n")
 				return true
 			}
@@ -215,7 +231,7 @@ func add_participant(meeting Meeting, participants []string) Meeting {
 func check_time_contract(allUser map[string]*User.User, meet Meeting, all_meetings map[string]Meeting, participants []string)bool {
 	for _, pName := range participants{
 		for _, meetingId := range allUser[pName].ParticipantMeeting {
-			if TimeContact(meet.StartTime, meet.EndTime, all_meetings[meetingId].StartTime, all_meetings[meetingId].EndTime, pName, meetingId) {
+			if time_contact(meet.StartTime, meet.EndTime, all_meetings[meetingId].StartTime, all_meetings[meetingId].EndTime, pName, meetingId) {
 				return true
 			}
 		}
@@ -223,11 +239,11 @@ func check_time_contract(allUser map[string]*User.User, meet Meeting, all_meetin
 	return false
 }
 
-func add_participantmeeting(allUser map[string]*User.User, participants []string) map[string]*User.User {
+func add_participantmeeting(allUser map[string]*User.User, participants []string, meeting Meeting) map[string]*User.User {
 	for user := range allUser{
 		for name := range participants{
 			if allUser[user].Username == participants[name]{
-				allUser[user].ParticipantMeeting = append(allUser[user].ParticipantMeeting,all_meetings[i].Id)
+				allUser[user].ParticipantMeeting = append(allUser[user].ParticipantMeeting,meeting.Id)
 				break;
 			}
 		}
@@ -235,28 +251,37 @@ func add_participantmeeting(allUser map[string]*User.User, participants []string
 	return allUser
 }
 
-func add_participants_main(allUser map[string]*User.User, all_meetings map[string]Meeting, participants []string)(map[string]*User.User, map[string]Meeting) {
+func add_participants_main(allUser map[string]*User.User, all_meetings map[string]Meeting, participants []string, i string)(map[string]*User.User, map[string]Meeting) {
 	if check_participants_repeat(participants, all_meetings[i].Participants){
-		return
+		return nil, nil
 	}
-	all_meetings[i] = add_participant(allUser, all_meetings, participants)
-	if check_time_contract(allUser, allMeetings[i], allMeetings, participants){
-		return
+	all_meetings[i] = add_participant(all_meetings[i], participants)
+	if check_time_contract(allUser, all_meetings[i], all_meetings, participants){
+		return nil, nil
 	}
-	allUser = add_participantmeeting(allUser, participants)
+	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+	defer flog.Close()
+	check_err(err)
+	logger := log.New(flog, "", log.LstdFlags)
+	title := all_meetings[i].Title
+	allUser = add_participantmeeting(allUser, participants, all_meetings[i])
 	str_mes := slice_to_string(participants)
-	fmt.Println("[agenda][info]delete the participants(" + str_mes + " ) in " + title + " meeting succeed!\n")
-	logger.Print("[agenda][info]delete the participants(" + str_mes + " ) in " + title + " meeting succeed!\n")
+	fmt.Println("[agenda][info]add the participants(" + str_mes + " ) in " + title + " meeting succeed!\n")
+	logger.Print("[agenda][info]add the participants(" + str_mes + " ) in " + title + " meeting succeed!\n")
 	return allUser,all_meetings
 }
 
-func cancel_meeting(title string) {
-	current_user := User.get_cur_user_name()
+func Cancel_meeting(title string) {
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("[agenda][error]you haven't logged in\n")
 		return 
 	}
-	var allUser map[string]*User.User = get_all_user_info() 
+	if(title == ""){
+		fmt.Println("[agenda][error]you should input the title of the meeting.For example:\n./agenda cancelMeeting -t=Study\n")
+		return
+	}
+	var allUser map[string]*User.User = Get_all_user_info() 
 	var all_meetings map[string]Meeting = get_all_meeting_info()
 	count := 0
 	for meeting := range all_meetings{
@@ -276,6 +301,10 @@ func cancel_meeting(title string) {
 				}
 			}
 			delete(all_meetings, meeting)
+			flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+			defer flog.Close()
+			check_err(err)
+			logger := log.New(flog, "", log.LstdFlags)
 			fmt.Println("[agenda][info]the " + title + " meeting cancel successfully\n")
 			logger.Print("[agenda][info]%s cancel the %s meeting\n", current_user, title)
 			count++
@@ -290,14 +319,14 @@ func cancel_meeting(title string) {
 	write_user_json(allUser)
 }
 
-func delete_all_meetings() {
-	current_user := User.get_cur_user_name()
+func Delete_all_meetings() {
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("[agenda][error]you haven't logged in\n")
 		return 
 	}
 
-	var allUser map[string]*User.User = get_all_user_info() 
+	var allUser map[string]*User.User = Get_all_user_info() 
 	var all_meetings map[string]Meeting = get_all_meeting_info()
 	count := 0
 
@@ -318,6 +347,10 @@ func delete_all_meetings() {
 				}
 			}
 			delete(all_meetings, meeting)
+			flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+			defer flog.Close()
+			check_err(err)
+			logger := log.New(flog, "", log.LstdFlags)
 			fmt.Println("[agenda][info]all meetings of " + current_user + "  deleted success\n")
 			logger.Print("[agenda][info]%s delete all his meeting\n", current_user)
 			count++
@@ -328,20 +361,24 @@ func delete_all_meetings() {
 		fmt.Println("You haven't create the any meeting\n")
 	}
 
-	write_meeting_json(allMeetings)
+	write_meeting_json(all_meetings)
 	write_user_json(allUser)
 }
 
-func exit_meeting(title string) {
-	current_user := User.get_cur_user_name()
+func Exit_meeting(title string) {
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("[agenda][error]you haven't logged in\n")
 		return 
 	}
+	if(title == ""){
+		fmt.Println("[agenda][error]you should input the title of the meeting.For example:\n./agenda exitMeeting -t=Study\n")
+		return
+	}
 
 	var participants []string
 	participants = append(participants, current_user)
-	var allUser map[string]*User.User = get_all_user_info() 
+	var allUser map[string]*User.User = Get_all_user_info() 
 	var all_meetings map[string]Meeting = get_all_meeting_info()
 	count := 0
 
@@ -369,6 +406,10 @@ func exit_meeting(title string) {
 						var meeting_id []string
 						meeting_id = append(meeting_id,  meet.Id)
 						allUser[user].ParticipantMeeting = remove_element_in_slice(allUser[user].ParticipantMeeting,meeting_id)
+						flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+						defer flog.Close()
+						check_err(err)
+						logger := log.New(flog, "", log.LstdFlags)
 						fmt.Println("[agenda][info]exit %s meeting succeed!\n", title)
 						logger.Print("[agenda][info]%s exit %s meeting succeed!\n", current_user, title)
 						break
@@ -390,14 +431,14 @@ func exit_meeting(title string) {
 
 
 
-func  exit_all_meetings() {
-	current_user := User.get_cur_user_name()
+func exit_all_meetings() {
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("You haven't logged in")
 		return 
 	}
 
-	var allUser map[string]*User.User = get_all_user_info() 
+	var allUser map[string]*User.User = Get_all_user_info() 
 	var all_meetings map[string]Meeting = get_all_meeting_info()
 	var participants []string
 	participants = append(participants, current_user)
@@ -425,9 +466,9 @@ func  exit_all_meetings() {
 
 
 //load all user infomation to User.AllUserInfo
-func get_all_user_info() map[string]*User.User {
+func Get_all_user_info() map[string]*User.User {
 	byteIn, err := ioutil.ReadFile("data/User.json")
-	check(err)
+	check_err(err)
 	var allUserInfo map[string]*User.User
 	json.Unmarshal(byteIn, &allUserInfo)
 	return allUserInfo
@@ -468,7 +509,7 @@ func add_element_in_slice(slice []string, elemsslice []string) []string{
 }
 
 func check_participants_exist(slice []string) {
-	var allUser map[string]*User.User = get_all_user_info()
+	var allUser map[string]*User.User = Get_all_user_info()
 	for _, pname := range slice{
 		if _, ok := allUser[pname];!ok{
 			fmt.Println("[agenda][error]No such user:"+pname+"!")
@@ -477,15 +518,15 @@ func check_participants_exist(slice []string) {
 	}
 }
 
-func search_meeting(search_start, search_end string) {
-	current_user := User.get_cur_user_name()
+func Search_meeting(search_start, search_end string) {
+	current_user := User.Get_cur_user_name()
 	if current_user == ""{
 		fmt.Println("You haven't logged in")
 		return 
 	}
 	var all_meetings map[string]Meeting = get_all_meeting_info()
-	start,_ := string_to_date(search_start)
-	end,_ := string_to_date(search_end)
+	start,_ := String_to_date(search_start)
+	end,_ := String_to_date(search_end)
 
 	if !small_date(start, end){
 		fmt.Println("[agenda][error]the StartTime is larger than EndTime\n")
@@ -525,19 +566,19 @@ func check_user_in_meeting(meeting *Meeting, username string) bool {
 
 
 
-func delete_user() {
-	currentName := User.GetCurUserName()
+func Delete_user() {
+	currentName := User.Get_cur_user_name()
 	if currentName == "" {
 		fmt.Println("You haven't logged in")
 		return
 	}
-	var allUser map[string]*User.User = GetAllUserInfo()
+	var allUser map[string]*User.User = Get_all_user_info()
 	var userslice []string;
 	userslice = append(userslice, currentName)
 	count := 0
 
-	exitAllMeetings()
-	DeleteAllMeetings()
+	exit_all_meetings()
+	Delete_all_meetings()
 
 	for user := range allUser{
 		if(allUser[user].Username == currentName){
@@ -551,7 +592,11 @@ func delete_user() {
 		fmt.Println("delete user fail\n")
 	}
 
-	User.LogOut()
+	User.Logout()
+	flog, err := os.OpenFile("data/input_output.log", os.O_APPEND|os.O_WRONLY, 0600)
+	defer flog.Close()
+	check_err(err)
+	logger := log.New(flog, "", log.LstdFlags)
 	logger.Print("[agenda][info]%s deleted", currentName)
 	write_user_json(allUser)
 }
@@ -578,4 +623,12 @@ func check_title_repeate(allMeetings map[string]Meeting, title string) bool {
 		}
 	}
 	return false
+}
+
+func Get_All_User_Info() map[string]*User.User {
+	byteIn, err := ioutil.ReadFile("data/User.json")
+	check_err(err)
+	var allUserInfo map[string]*User.User
+	json.Unmarshal(byteIn, &allUserInfo)
+	return allUserInfo
 }

@@ -28,7 +28,7 @@ var searchUserCmd = &cobra.Command{
 	./agenda searchUser`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("searchUser called")
-		User.search_all_user()
+		User.Search_all_user()
 	},
 }
 

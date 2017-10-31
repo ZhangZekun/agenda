@@ -30,7 +30,7 @@ var exitMeetingCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("exitMeeting called")
 		title, _ := cmd.Flags().GetString("title")
-		Meeting.exit_meeting(title)
+		Meeting.Exit_meeting(title)
 	},
 }
 
