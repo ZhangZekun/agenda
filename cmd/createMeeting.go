@@ -22,7 +22,7 @@ import (
 )
 
 // createMeetingCmd represents the createMeeting command
-var createMeetingCmd = &cobra.Command{
+var createMeetingCmd“” = &cobra.Command{
 	Use:   "createMeeting",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -46,7 +46,7 @@ to quickly create a Cobra application.`,
 func init() {
 	RootCmd.AddCommand(createMeetingCmd)
 	createMeetingCmd.Flags().StringP("title", "t", "", "title")
-	createMeetingCmd.Flags().StringSliceP("participants", "p", make([]string, 0), "title")
+	createMeetingCmd.Flags().StringSliceP("participants", "p", make([]string, 0), "participants")
 	createMeetingCmd.Flags().StringP("startTime", "s", "", "startTime")
 	createMeetingCmd.Flags().StringP("endTime", "e", "", "User endTime")
 

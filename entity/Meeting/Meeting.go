@@ -59,7 +59,7 @@ func CreateAMeeting(meeting *Meeting) {
 	meeting.Participants = append(meeting.Participants, currentName)
 	allMeetings[meeting.Id] = *meeting
 
-	var allUser map[string]*User.User = GetAllUserInfo()
+	var map[string]*User.User = GetAllUserInfo()
 	//check all participanter exist, and time contract
 	for _, pName := range meeting.Participants {
 		//check if the user exist
