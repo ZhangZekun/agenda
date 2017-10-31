@@ -24,17 +24,12 @@ import (
 // cancelMeetingCmd represents the cancelMeeting command
 var cancelMeetingCmd = &cobra.Command{
 	Use:   "cancelMeeting",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "to delete the meeting that user creates",
+	Long: `user should input the title of the meeting`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("cancelMeeting called")
 		title, _ := cmd.Flags().GetString("title")
-		Meeting.CancelMeeting(title)
+		Meeting.cancel_meeting(title)
 	},
 }
 

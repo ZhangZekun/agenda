@@ -24,19 +24,16 @@ import (
 // operateParticipantCmd represents the operateParticipant command
 var operateParticipantCmd = &cobra.Command{
 	Use:   "operateParticipant",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "the sponsor of the meeting can add or delete the participant in the meeting",
+	Long: `you need to input three arguments(title(t), operation(o), participants(p)).For example:
+	addCMD:./agenda operateParticipant -t=Work -o=add -p=zhangzekun, zhangzhijian;
+	deleteCMD:./agenda operateParticipant -t=Work -o=del -p=zhangzekun,zhangzhijian`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("operateParticipant called")
 		title, _ := cmd.Flags().GetString("title")
 		operation, _ := cmd.Flags().GetString("op")
 		participants, _ := cmd.Flags().GetStringSlice("participants")
-		Meeting.OperateParticipants(title,operation, participants)
+		Meeting.operate_participants(title,operation, participants)
 	},
 }
 

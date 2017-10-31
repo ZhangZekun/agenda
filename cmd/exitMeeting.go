@@ -24,17 +24,13 @@ import (
 // exitMeetingCmd represents the exitMeeting command
 var exitMeetingCmd = &cobra.Command{
 	Use:   "exitMeeting",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "to exit the meeting as a participant",
+	Long: `you need to input the title of the meeting you want to exit.For example:
+	./agenda exitMeeting -t=Work`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("exitMeeting called")
 		title, _ := cmd.Flags().GetString("title")
-		Meeting.ExitMeeting(title)
+		Meeting.exit_meeting(title)
 	},
 }
 
